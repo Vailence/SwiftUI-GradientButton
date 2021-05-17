@@ -8,14 +8,54 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        Text("Hello, world!")
-            .padding()
-    }
+	
+	@State var angle = 0.0
+	
+	var colors: [Color] = [.red, .blue, .green, .purple]
+	
+	var body: some View {
+		ZStack {
+			GeometryReader(content: { geometry in
+				ZStack {
+					AngularGradient(gradient: Gradient(colors: colors),
+									center: .center,
+									angle: .degrees(angle))
+						.blendMode(.overlay)
+						.blur(radius: 6)
+						.mask(
+							RoundedRectangle(cornerRadius: 16)
+								.frame(maxWidth: geometry.size.width - 16)
+								.frame(height: 48, alignment: .center)
+								.blur(radius: 6)
+						)
+						.onAppear() {
+							withAnimation(Animation.linear(duration: 7).repeatForever(autoreverses: false)) {
+								angle += 360
+							}
+						}
+					
+					Text("Gradient Button")
+						.font(.title2)
+						.bold()
+						.frame(height: 48)
+						.frame(maxWidth: geometry.size.width - 16)
+						.background(Color.white.opacity(0.95))
+						.overlay(
+							RoundedRectangle(cornerRadius: 16)
+								.stroke(Color.white, lineWidth: 1)
+								.opacity(0.9)
+						)
+						.cornerRadius(16)
+				}
+			})
+			.frame(height: 50)
+		}
+	}
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+	static var previews: some View {
+		ContentView()
+			.previewLayout(.sizeThatFits)
+	}
 }
