@@ -12,9 +12,12 @@ struct ContentView: View {
 	@State var angle = 0.0
 	
 	var colors: [Color] = [.red, .blue, .green, .purple]
-	
+
 	var body: some View {
-		ZStack {
+
+		Button(action: {
+			print("Button pressed")
+		}, label: {
 			GeometryReader(content: { geometry in
 				ZStack {
 					AngularGradient(gradient: Gradient(colors: colors),
@@ -24,22 +27,24 @@ struct ContentView: View {
 						.blur(radius: 6)
 						.mask(
 							RoundedRectangle(cornerRadius: 16)
-								.frame(maxWidth: geometry.size.width - 16)
+								.frame(maxWidth: geometry.size.width - 32)
 								.frame(height: 48, alignment: .center)
 								.blur(radius: 6)
 						)
 						.onAppear() {
-							withAnimation(Animation.linear(duration: 7).repeatForever(autoreverses: false)) {
+							withAnimation(Animation.linear(duration: 7)
+											.repeatForever(autoreverses: false)) {
 								angle += 360
 							}
 						}
-					
+
 					Text("Gradient Button")
 						.font(.title2)
 						.bold()
+						.foregroundColor(Color.black)
 						.frame(height: 48)
-						.frame(maxWidth: geometry.size.width - 16)
-						.background(Color.white.opacity(0.95))
+						.frame(maxWidth: geometry.size.width - 32)
+						.background(Color.white)
 						.overlay(
 							RoundedRectangle(cornerRadius: 16)
 								.stroke(Color.white, lineWidth: 1)
@@ -49,7 +54,7 @@ struct ContentView: View {
 				}
 			})
 			.frame(height: 50)
-		}
+		})
 	}
 }
 
